@@ -1,17 +1,15 @@
-# Salesforce DX Project: Next Steps
+# We Summit Documents by We Summit Mountains
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+## To Deploy EASY:
+[Click Here](https://githubsfdeploy.herokuapp.com?owner=shadradson&repo=WSM-Tools---Clean-Flow-Versions&ref=main)
 
-## How Do You Plan to Deploy Your Changes?
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
-
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## To Deploy and Modify:
+1. Fork this Repo
+2. Connect to the Sandbox or Production/Developer Org that you want to deploy to.
+3. Deploy Manifest to ORG
 
 ## Read All About It
-
 - [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
 - [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
 - [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
