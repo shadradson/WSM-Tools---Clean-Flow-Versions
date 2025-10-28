@@ -1,4 +1,4 @@
-# We Summit Documents by We Summit Mountains
+# Flow Version Cleanup Tool by We Summit Mountains
 
 ## To Deploy EASY:
 [Click Here](https://githubsfdeploy.herokuapp.com?owner=shadradson&repo=WSM-Tools---Clean-Flow-Versions&ref=main)
