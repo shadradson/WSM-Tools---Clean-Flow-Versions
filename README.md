@@ -2,6 +2,8 @@
 
 A Salesforce Screen Flow tool designed to help administrators and developers clean up old flow versions and failed flow interviews from their Salesforce org. This tool provides an easy-to-use interface for managing flow metadata and maintaining a clean, performant Salesforce environment.
 
+> **Important**: This flow requires the [Flow Screen Components Basepacks](https://unofficialsfdc.com/flow-screen-components/) to be installed in your org before deployment. See the [Prerequisites](#prerequisites) section for installation instructions.
+
 ## Overview
 
 As Salesforce Flows evolve through development and production use, old inactive versions and failed interview records can accumulate in your org. This can lead to:
@@ -37,21 +39,40 @@ The WSM Clean Flow Version tool provides a user-friendly screen flow interface t
 - Salesforce org (Sandbox, Developer, or Production)
 - Salesforce CLI (sfdx) - if deploying manually
 - API version 64.0 or higher
-- Flow Button Bar component (`c:fsc_flowButtonBar`) - included in the deployment
+- **REQUIRED**: Flow Button Bar component (`c:fsc_flowButtonBar`) - This is an external dependency from the [Flow Screen Components Basepacks](https://unofficialsfdc.com/flow-screen-components/). You must install this component separately before deploying this flow.
 
 ## Installation
 
-### Quick Deploy (Recommended)
+### Step 1: Install Prerequisites
+
+**IMPORTANT**: Before installing this flow, you must first install the Flow Screen Components Basepacks, which includes the required `fsc_flowButtonBar` component.
+
+**Option A - Install via URL (Recommended)**:
+Visit the [Flow Screen Components Basepacks](https://unofficialsfdc.com/flow-screen-components/) website and follow the installation instructions.
+
+**Option B - Install from GitHub**:
+```bash
+# Clone the Flow Screen Components repository
+git clone https://github.com/alexed1/LightningFlowComponents.git
+cd LightningFlowComponents
+
+# Deploy the Flow Button Bar component to your org
+sfdx force:source:deploy -p flow_screen_components/flowButtonBar -u YourOrgAlias
+```
+
+### Step 2: Deploy WSM Clean Flow Tool
+
+#### Quick Deploy (Recommended)
 
 Click the button below to deploy directly to your Salesforce org:
 
-[<img src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png" alt="Deploy to Salesforce">](https://githubsfdeploy.herokuapp.com?owner=shadradson&repo=WSM-Tools---Clean-Flow-Versions&ref=main)
+[<img src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png" alt="Deploy to Salesforce">](https://githubsfdeploy.herokuapp.com?owner=WeSummitMountains&repo=WSM-Tools---Clean-Flow-Versions&ref=main)
 
-### Manual Deployment
+#### Manual Deployment
 
 1. **Clone this repository**:
    ```bash
-   git clone https://github.com/shadradson/WSM-Tools---Clean-Flow-Versions.git
+   git clone https://github.com/WeSummitMountains/WSM-Tools---Clean-Flow-Versions.git
    cd WSM-Tools---Clean-Flow-Versions
    ```
 
@@ -137,16 +158,37 @@ Alternatively, you can:
 
 ### Custom Components
 
-- **fsc_flowButtonBar** (`c:fsc_flowButtonBar`): Custom Lightning component for navigation buttons
-- **flowruntime:datatable**: Standard flow data table component
+- **fsc_flowButtonBar** (`c:fsc_flowButtonBar`): External Lightning component for navigation buttons (must be installed separately - see Prerequisites)
+- **flowruntime:datatable**: Standard flow data table component (built-in to Salesforce)
 
 ## Important Notes
 
 - **Backup Recommendation**: Always test in a Sandbox environment first
 - **Active Versions**: The tool automatically protects active flow versions from deletion
-- **Permissions**: Users need appropriate permissions to delete flow metadata
+- **Permissions**: Users need appropriate permissions to delete flow metadata (see Permissions section below)
 - **Flow Interviews**: Be cautious when deleting flow interviews - ensure they are no longer needed
 - **Pre-filtering**: By default, the flow pre-filters for flows containing "WSM" - you can modify this in the flow definition
+- **No Undo**: Deleted flow versions and interviews cannot be recovered - always verify your selections before proceeding
+
+## Permissions Required
+
+To use this tool, users need the following permissions:
+
+### Object Permissions
+- **FlowRecord**: Read access
+- **FlowRecordVersion**: Read and Delete access
+- **FlowInterview**: Read and Delete access
+
+### System Permissions
+One of the following:
+- **View All Data** and **Modify All Data** (System Administrator)
+- **Manage Flow** permission
+- Custom permission set with the object permissions listed above
+
+### Notes on Permissions
+- The flow runs in **System Mode Without Sharing**, which means it can access records regardless of sharing rules
+- However, users still need object-level permissions to read and delete the records
+- If users get "Insufficient Access" errors, ensure they have the required permissions above
 
 ## Configuration
 
@@ -172,29 +214,48 @@ To allow selection of all flows without pre-filtering:
 
 ### Common Issues
 
+**Issue**: "Unknown component c:fsc_flowButtonBar" or flow fails to activate
+- **Solution**: You need to install the Flow Screen Components Basepacks first. See the Prerequisites section above.
+
 **Issue**: "You don't have access to this record"
-- **Solution**: Ensure you have appropriate permissions to view and delete flow metadata
+- **Solution**: Ensure you have appropriate permissions to view and delete flow metadata. You may need Modify All Data or Manage Flow permissions.
 
 **Issue**: Active flow version appears in the deletion list
-- **Solution**: This should not happen due to filtering. If it does, please do not delete it and report the issue
+- **Solution**: This should not happen due to filtering. If it does, please do not delete it and report the issue as a bug.
 
 **Issue**: Flow interviews won't delete
-- **Solution**: Some flow interviews may be locked or in a state that prevents deletion. Check the interview status
+- **Solution**: Some flow interviews may be locked or in a state that prevents deletion. Check the interview status and ensure there are no active or paused interviews that should be resumed.
+
+**Issue**: "Insufficient access" error when running the flow
+- **Solution**: The flow runs in System Mode Without Sharing, but users still need View All Data permission or appropriate profile/permission set to access FlowRecord, FlowRecordVersion, and FlowInterview objects.
 
 ## Project Structure
 
 ```
 WSM-Tools---Clean-Flow-Versions/
+├── .forceignore                    # Salesforce deployment ignore file
+├── .sfdx/                          # SFDX cache and metadata
+│   └── tools/
+│       └── soqlMetadata/           # Standard object metadata cache
+├── config/
+│   └── project-scratch-def.json   # Scratch org definition
 ├── force-app/
 │   └── main/
 │       └── default/
 │           └── flows/
-│               └── WSM_SCR_TOOL_Clean_Flow_Version.flow-meta.xml
+│               └── WSM_SCR_TOOL_Clean_Flow_Version.flow-meta.xml  # Main flow
 ├── manifest/
-│   └── package.xml
-├── sfdx-project.json
-└── README.md
+│   └── package.xml                 # Deployment manifest
+├── sfdx-project.json               # SFDX project configuration
+└── README.md                       # This file
 ```
+
+### Repository Contents
+
+- **Flow**: 1 Screen Flow (WSM_SCR_TOOL_Clean_Flow_Version)
+- **API Version**: Flow uses 64.0, project configured for 65.0
+- **Dependencies**: Requires external fsc_flowButtonBar component
+- **No Apex Code**: This is a pure Flow-based solution with no custom Apex
 
 ## Contributing
 
