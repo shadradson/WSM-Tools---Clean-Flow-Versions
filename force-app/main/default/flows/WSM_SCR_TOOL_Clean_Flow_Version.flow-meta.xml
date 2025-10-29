@@ -6,7 +6,7 @@
         <name>Create_PreSelectedFlows</name>
         <label>Create PreSelectedFlows</label>
         <locationX>197</locationX>
-        <locationY>517</locationY>
+        <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>COLL_FlowRecords_PreSelected</assignToReference>
             <operator>Add</operator>
@@ -49,16 +49,16 @@
         <name>Which_Function_Selected</name>
         <label>Which Function Selected?</label>
         <locationX>439</locationX>
-        <locationY>326</locationY>
+        <locationY>327</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Clean_flow_versions</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Select_Function_bb.value</leftValueReference>
+                <leftValueReference>buttons_lwc.OutputSelectedButtonString</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>cfv</stringValue>
+                    <stringValue>Clean Flow Versions</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -70,10 +70,10 @@
             <name>Clean_Flow_Interviews</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Select_Function_bb.value</leftValueReference>
+                <leftValueReference>buttons_lwc.OutputSelectedButtonString</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>cfi</stringValue>
+                    <stringValue>Clean Interviews</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -273,7 +273,7 @@
         <name>What_Function</name>
         <label>What Function?</label>
         <locationX>454</locationX>
-        <locationY>201</locationY>
+        <locationY>200</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -281,37 +281,25 @@
             <targetReference>Which_Function_Selected</targetReference>
         </connector>
         <fields>
-            <name>Select_Function_bb</name>
-            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <name>buttons_lwc</name>
+            <extensionName>c:wsmFlowPillOptions</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>alignment</name>
+                <name>InputOptions</name>
                 <value>
-                    <stringValue>right</stringValue>
+                    <stringValue>Clean Flow Versions,Clean Interviews</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>orientation</name>
+                <name>NavigateOnClick2</name>
                 <value>
-                    <stringValue>horizontal</stringValue>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>showLines</name>
+                <name>OutputSelectedButtonString</name>
                 <value>
-                    <stringValue>neither</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>actionMode</name>
-                <value>
-                    <stringValue>navigation</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>buttons</name>
-                <value>
-                    <stringValue>[{&quot;label&quot;:&quot;Clean Flow Versions&quot;,&quot;value&quot;:&quot;cfv&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:&quot;utility:cut&quot;,&quot;index&quot;:0},{&quot;label&quot;:&quot;Clean Flow Interviews&quot;,&quot;value&quot;:&quot;cfi&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:&quot;utility:collapse_all&quot;,&quot;index&quot;:1}]</stringValue>
+                    <elementReference>selected_function_txt</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -489,6 +477,11 @@
         </connector>
     </start>
     <status>Active</status>
+    <textTemplates>
+        <name>FlowButtons_tt</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>[ {&quot;order&quot;:1 ,&quot;value&quot;: &quot;cfv&quot; , &quot;label&quot; : &quot;Clean Old Flow Versions&quot;}, {&quot;order&quot;:2 ,&quot;value&quot; : &quot;cfi&quot;, &quot;label&quot; : &quot;Clean Flow Interviews&quot;} ]</text>
+    </textTemplates>
     <variables>
         <name>COLL_FlowRecords_PreSelected</name>
         <dataType>SObject</dataType>
@@ -512,5 +505,12 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>FlowRecord</objectType>
+    </variables>
+    <variables>
+        <name>selected_function_txt</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

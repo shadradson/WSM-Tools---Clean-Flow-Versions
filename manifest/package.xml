@@ -4,5 +4,9 @@
 		<members>WSM_SCR_TOOL_Clean_Flow_Version</members>
 		<name>Flow</name>
 	</types>
+	<types>
+		<members>wsmFlowPillOptions</members>
+		<name>LightningComponentBundle</name>
+	</types>
 	<version>65.0</version>
 </Package>

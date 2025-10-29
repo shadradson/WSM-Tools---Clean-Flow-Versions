@@ -1,0 +1,7 @@
+<template>
+    <div class="pillbutton_outer_box">        
+        <template for:each={zippedbuttons} for:item="butt">
+            <lightning-button variant="brand" label={butt.value} class="pillbutton_top btn" key={butt.value} onclick={handleholdval} ></lightning-button>
+        </template>
+    </div>
+</template>

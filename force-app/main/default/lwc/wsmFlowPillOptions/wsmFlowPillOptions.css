@@ -1,0 +1,25 @@
+.pillbutton_outer_box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.pillbutton_outer_box .button_heading {
+    font-size: 1rem!important;
+    color: #777;
+    font-weight: 300;
+}
+
+
+.pillbutton_top {
+    position: relative;
+    min-width: 240px;
+    height: 50px;
+    display: flex;
+    flex-basis: 45%;
+    flex-grow: 1;
+}
+.pillbutton_top > button.slds-button.slds-button_brand {
+    width: 100%;
+}
